@@ -1,10 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Feed extends StatelessWidget {
+class Feed extends StatefulWidget {
   const Feed({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<Feed> createState() => _FeedState();
+}
+
+class _FeedState extends State<Feed> {
+  // 좋아요 여부
+  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +30,19 @@ class Feed extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              icon: Icon(CupertinoIcons.heart, color: Colors.black),
-              onPressed: () {},
+              icon: Icon(
+                CupertinoIcons.heart,
+                // 3항 연산자 : true일때 pink 색 넣기
+                color: isFavorite ? Colors.pink : Colors.black,
+              ),
+              // 해당 아이콘을 누르면
+              onPressed: () {
+                // 화면 갱신해라 : setState (build함수가 다시 실행됨)
+                setState(() {
+                  // toggle
+                  isFavorite = !isFavorite;
+                });
+              },
             ),
             IconButton(
               icon: Icon(CupertinoIcons.chat_bubble, color: Colors.black),
