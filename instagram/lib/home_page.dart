@@ -9,6 +9,17 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // images 배열 (한번값을 넣으면 수정 안되도록 final)
+    final List<String> images = [
+      "https://cdn2.thecatapi.com/images/bi.jpg",
+      "https://cdn2.thecatapi.com/images/63g.jpg",
+      "https://cdn2.thecatapi.com/images/a3h.jpg",
+      "https://cdn2.thecatapi.com/images/a9m.jpg",
+      "https://cdn2.thecatapi.com/images/aph.jpg",
+      "https://cdn2.thecatapi.com/images/1rd.jpg",
+      "https://cdn2.thecatapi.com/images/805.gif",
+    ];
+
     return Scaffold(
       appBar: AppBar(
         // appBar 상단바 추가
@@ -35,9 +46,12 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.white,
       ),
       body: ListView.builder(
-        itemCount: 10,
+        itemCount: images.length,
         itemBuilder: (context, index) {
-          return Feed();
+          String Image = images[index];
+          return Feed(
+            imageUrl: Image,
+          );
         },
       ),
     );
