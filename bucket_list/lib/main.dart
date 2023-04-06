@@ -66,12 +66,19 @@ class _HomePageState extends State<HomePage> {
             ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {
+        onPressed: () async {
           // + 버튼 클릭시 버킷 생성 페이지로 이동
-          Navigator.push(
+          String? job = await Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => CreatePage()),
           );
+          // print(job);
+          if (job != null) {
+            // 화면 갱신 명령어 필수
+            setState(() {
+              bucketList.add(job); // 버킷 리스트에 추가
+            });
+          }
         },
       ),
     );
@@ -146,6 +153,8 @@ class _CreatePageState extends State<CreatePage> {
                     setState(() {
                       error = null; // 내용이 있는 경우 에러 메세지 숨기기
                     });
+                    // 뒤쪽 화면으로 넘기고 싶은 변수를 두번째 파라미터에 넣어주면 됨.
+                    Navigator.pop(context, job); // job 변수를 반환하며 화면을 종료
                   }
                 },
               ),
