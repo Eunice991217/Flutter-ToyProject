@@ -17,6 +17,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/// 버킷 클래스
+class Bucket {
+  String job; // 할 일
+  bool isDone; // 완료 여부
+
+  Bucket(this.job, this.isDone); // 생성자
+}
+
 /// 홈 페이지
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,7 +35,7 @@ class HomePage extends StatefulWidget {
 
 // 상태 클래스
 class _HomePageState extends State<HomePage> {
-  List<String> bucketList = ['여행가기']; // 전체 버킷리스트 목록
+  List<Bucket> bucketList = []; // 전체 버킷리스트 목록
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +48,17 @@ class _HomePageState extends State<HomePage> {
           : ListView.builder(
               itemCount: bucketList.length, // bucketList 개수 만큼 보여주기
               itemBuilder: (context, index) {
-                String bucket = bucketList[index]; // index에 해당하는 bucket 가져오기
+                Bucket bucket = bucketList[index]; // index에 해당하는 bucket 가져오기
                 return ListTile(
                   // 버킷 리스트 할 일
                   title: Text(
-                    bucket,
+                    // bucket이 할일을 job이라는 속성이 가지고 있다.
+                    bucket.job,
                     style: TextStyle(
+                      color: bucket.isDone ? Colors.grey : Colors.black,
+                      decoration: bucket.isDone
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
                       fontSize: 24,
                     ),
                   ),
@@ -59,7 +72,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onTap: () {
                     // 아이템 클릭시
-                    print('$bucket : 클릭 됨');
+                    // print('$bucket : 클릭 됨');
+                    setState(() {
+                      // Toggle 기능
+                      bucket.isDone = !bucket.isDone;
+                    });
                   },
                 );
               },
@@ -76,7 +93,10 @@ class _HomePageState extends State<HomePage> {
           if (job != null) {
             // 화면 갱신 명령어 필수
             setState(() {
-              bucketList.add(job); // 버킷 리스트에 추가
+              // 생성자를 호출해서 bucket 클래스의 인스턴스를 호출
+              Bucket newBucket = Bucket(job, false);
+              // job을 그대로 넣을 수 없음 (String 형이므로, 우리가 선언한건 Bucket 구조체)
+              bucketList.add(newBucket); // 버킷 리스트에 추가
             });
           }
         },
