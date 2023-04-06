@@ -79,8 +79,19 @@ class _HomePageState extends State<HomePage> {
 }
 
 /// 버킷 생성 페이지
-class CreatePage extends StatelessWidget {
+class CreatePage extends StatefulWidget {
   const CreatePage({Key? key}) : super(key: key);
+
+  @override
+  State<CreatePage> createState() => _CreatePageState();
+}
+
+class _CreatePageState extends State<CreatePage> {
+  // TextField의 값을 가져올 때 사용합니다.
+  TextEditingController textController = TextEditingController();
+
+  // 경고 메세지
+  String? error;
 
   @override
   Widget build(BuildContext context) {
@@ -101,9 +112,12 @@ class CreatePage extends StatelessWidget {
           children: [
             // 텍스트 입력창
             TextField(
+              controller:
+                  textController, // TextField와 TextEditingController를 연결해 줍니다.
               autofocus: true,
               decoration: InputDecoration(
                 hintText: "하고 싶은 일을 입력하세요",
+                errorText: error,
               ),
             ),
             SizedBox(height: 32),
@@ -120,6 +134,19 @@ class CreatePage extends StatelessWidget {
                 ),
                 onPressed: () {
                   // 추가하기 버튼 클릭시
+                  String job =
+                      textController.text; // textController로부터 현재 입력되어있는 값을 가져옴
+                  // print(job);
+                  if (job.isEmpty) {
+                    setState(() {
+                      // error 변수의 값이 바뀌는 경우 화면을 갱신
+                      error = "내용을 입력해주세요."; // 내용이 없는 경우 에러 메세지
+                    });
+                  } else {
+                    setState(() {
+                      error = null; // 내용이 있는 경우 에러 메세지 숨기기
+                    });
+                  }
                 },
               ),
             ),
